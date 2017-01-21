@@ -21,7 +21,44 @@
   <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 
   <script>
-    <!-- ... our custom JS jQuery scripting goes here!! -->
+    // start executing only after document has loaded
+    $(document).ready(function() {
+    // establish global variables for LED status
+    var led1;
+    var led2;
+    var led3;
+
+    // The red button click functions run asynchronously in the browser
+    $('#red_led_btn').click(function() {
+      if (led1 === "OFF") {led1 = "ON";} else {led1 = "OFF";}
+      var params = 'led=1&state='+led1;
+      console.log('Led Command with params:' + params);
+      $.post('/ledcmd', params, function(data, status){
+              console.log("Data: " + data + "\nStatus: " + status);
+      });
+    });
+    // The green button click functions run asynchronously in the browser
+    $('#grn_led_btn').click(function() {
+      if (led2 === "OFF") {led2 = "ON";} else {led2 = "OFF";}
+      var params = 'led=2&state='+led2;
+      console.log('Led Command with params:' + params);
+      $.post('/ledcmd', params, function(data, status){
+              console.log("Data: " + data + "\nStatus: " + status);
+      });
+    });
+
+    // The blue button click functions run asynchronously in the browser
+    $('#blu_led_btn').click(function() {
+      if (led3 === "OFF") {led3 = "ON";} else {led3 = "OFF";}
+      var params = 'led=3&state='+led3;
+      console.log('Led Command with params:' + params);
+      $.post('/ledcmd', params, function(data, status){
+              console.log("Data: " + data + "\nStatus: " + status);
+      });
+    });
+
+    // code the green and blue buttons the same
+    });
   </script>
 
 </body>
