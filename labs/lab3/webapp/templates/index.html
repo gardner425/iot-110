@@ -108,6 +108,14 @@ initial_conditions().then(led_status);
     });
   </script>
 
+  <script type="text/javascript">
+    var switchSource = new EventSource("{{ url_for('myData') }}");
+    switchSource.onmessage = function(e) {
+      console.log(e.data);
+    }
+  </script>
+
+
 </body>
 
 </html>
