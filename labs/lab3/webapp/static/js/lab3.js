@@ -19,9 +19,13 @@ $(document).ready(function() {
   /* update the Switch based on its SSE state monitor */
   function updateSwitch(switchValue) {
     if (switchValue === '1') {
-      $('#switch').text('ON');
+      // $('#switch').text('ON');
+      $('#switch').toggleClass('label-default', false);
+      $('#switch').toggleClass('label-success', true);
     } else if (switchValue === '0') {
-      $('#switch').text('OFF');
+      // $('#switch').text('OFF');
+      $('#switch').toggleClass('label-default', true);
+      $('#switch').toggleClass('label-success', false);
     }
   }
 
@@ -29,29 +33,41 @@ $(document).ready(function() {
   function updateLeds(ledNum,ledValue) {
     if (ledNum === 1) {
       if (ledValue === '1') {
-        $('#red_led_label').text('ON');
+        // $('#red_led_label').text('ON');
         led1 = "ON"
+        $('#red_led_label').toggleClass('label-default', false);
+        $('#red_led_label').toggleClass('label-danger', true);
       } else if (ledValue === '0') {
-        $('#red_led_label').text('OFF');
+        // $('#red_led_label').text('OFF');
         led1 = "OFF"
+        $('#red_led_label').toggleClass('label-default', true);
+        $('#red_led_label').toggleClass('label-danger', false);
       }
     }
     else if (ledNum === 2) {
       if (ledValue === '1') {
-        $('#grn_led_label').text('ON');
+        // $('#grn_led_label').text('ON');
         led2 = "ON"
+        $('#grn_led_label').toggleClass('label-default', false);
+        $('#grn_led_label').toggleClass('label-success', true);
       } else if (ledValue === '0') {
-        $('#grn_led_label').text('OFF');
+        // $('#grn_led_label').text('OFF');
         led2 = "OFF"
+        $('#grn_led_label').toggleClass('label-default', true);
+        $('#grn_led_label').toggleClass('label-success', false);
       }
     }
     else if (ledNum === 3) {
       if (ledValue === '1') {
-        $('#blu_led_label').text('ON');
+        // $('#blu_led_label').text('ON');
         led3 = "ON"
+        $('#blu_led_label').toggleClass('label-default', false);
+        $('#blu_led_label').toggleClass('label-primary', true);
       } else if (ledValue === '0') {
-        $('#blu_led_label').text('OFF');
+        // $('#blu_led_label').text('OFF');
         led3 = "OFF"
+        $('#blu_led_label').toggleClass('label-default', true);
+        $('#blu_led_label').toggleClass('label-primary', false);
       }
     }
   }
