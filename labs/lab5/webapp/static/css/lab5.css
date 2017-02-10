@@ -1,0 +1,88 @@
+body {
+  background-color: rgb(51, 0, 111);
+  width: 800px;
+  /*margin: 0 auto;*/
+  padding-top: 10px;
+  /*border: 1px dashed gold;*/
+}
+
+div {
+  text-align: center;
+}
+
+span.label {
+  font-size: 1.1em;
+}
+
+.dash {}
+
+
+/* Parent <div> of LED Buttons */
+
+.led_button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 0px;
+  height: 43px;
+}
+
+button {
+  width: 170%;
+}
+
+#title {
+  text-align: center;
+}
+
+.well {
+  width: 600px;
+}
+
+.well-sm {
+  margin: 10px auto;
+}
+
+.panel {
+  background-color: darkgray;
+  width: 640px;
+}
+
+.gpio {
+  border: 2px solid lightgray;
+  border-radius: 5px;
+  padding-left: 15px;
+  height: 172px;
+  width: 25%;
+}
+
+.params {
+  border: 2px solid lightgray;
+  border-radius: 5px;
+  height: 172px;
+  width: 75%;
+  padding-top: 5px;
+  background-color: rgba(51, 0, 111, 0.5)
+}
+
+table {
+  background-color: lightgray;
+  border-radius: 3px;
+}
+
+th,
+td {
+  text-align: left;
+}
+
+.col-sm-6 {
+  /*   border: 1px dashed blue; */
+  margin-left: 5px;
+  height: 40px;
+}
+
+.col-sm-5 {}
+
+.col-sm-4 {
+  height: 40px;
+}
