@@ -5,7 +5,6 @@ $(document).ready(function() {
   var led2;
   var led3;
 
-  //var iotSource = new EventSource("{{ url_for('myData') }}");
   /* intercept the incoming states from SSE */
   iotSource.onmessage = function(e) {
     console.log(e.data);
