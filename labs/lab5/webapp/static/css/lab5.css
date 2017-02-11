@@ -14,7 +14,8 @@ span.label {
   font-size: 1.1em;
 }
 
-.dash {}
+.dash {
+}
 
 
 /* Parent <div> of LED Buttons */
@@ -70,8 +71,7 @@ table {
   border-radius: 3px;
 }
 
-th,
-td {
+th,td {
   text-align: left;
 }
 
@@ -81,7 +81,8 @@ td {
   height: 40px;
 }
 
-.col-sm-5 {}
+.col-sm-5 {
+}
 
 .col-sm-4 {
   height: 40px;

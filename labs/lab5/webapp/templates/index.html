@@ -13,7 +13,8 @@
 <body>
   <div class="panel container">
     <div class="container well well-sm">
-      <h3 id='title'>UW IoT | Lab 5 Server Sent Events</h3> </div>
+      <h3 id='title'>UW IoT | Lab 5 Server Sent Events</h3>
+    </div>
     <div class="container well">
       <!-- Dashboard Row-->
       <div class="row dash">
@@ -28,6 +29,9 @@
             <tr class=param-row> </tr>
             <tr class=param-row> </tr>
             <tr class=param-row> </tr>
+            <!-- <tr class=param-row><td>time1</td><td>temp1</td><td>pressure1</td></tr>
+            <tr class=param-row><td>time2</td><td>temp2</td><td>pressure2</td></tr>
+            <tr class=param-row><td>time3</td><td>temp3</td><td>pressure3</td></tr> -->
           </table>
         </div>
         <!-- ==================== BMP280 Sensor Values ===================== -->
@@ -37,27 +41,37 @@
           <div class="row">
             <div class="col-sm-5" id="switch_text"> Switch</div>
             <div class="col-sm-4" id="switch_label">
-              <h4><span id="switch" class="label label-default">&#9759</span></h4> </div>
+              <h4><span id="switch" class="label label-default">&#9759</span></h4>
+            </div>
           </div>
           <!-- ======================= Switch Sensor ======================= -->
           <!-- ============================ LEDS =========================== -->
           <!-- LED: RED -->
           <div class="row">
-            <div class="col-sm-5 led_button"> <button type='button' id="red_led_btn" class="btn btn-md btn-default">Tog</button> </div>
+            <div class="col-sm-5 led_button">
+                <button type='button' id="red_led_btn" class="btn btn-md btn-default">Tog</button>
+            </div>
             <div class="col-sm-2 led_label">
-              <h4><span id="red_led_label" class="label label-default">&#9728</span></span></h4> </div>
+              <h4><span id="red_led_label" class="label label-default">&#9728</span></span></h4>
+            </div>
           </div>
           <!-- LED: GREEN -->
           <div class="row">
-            <div class="col-sm-5 led_button"> <button type='button' id="grn_led_btn" class="btn btn-md btn-default">Tog</button> </div>
+            <div class="col-sm-5 led_button">
+                <button type='button' id="grn_led_btn" class="btn btn-md btn-default">Tog</button>
+            </div>
             <div class="col-sm-4 led_label">
-              <h4><span id="grn_led_label" class="label label-default">&#9728</span></h4> </div>
+              <h4><span id="grn_led_label" class="label label-default">&#9728</span></h4>
+            </div>
           </div>
           <!-- LED: BLUE -->
           <div class="row">
-            <div class="col-sm-5 led_button"> <button type='button' id="blu_led_btn" class="btn btn-md btn-default">Tog</button> </div>
+            <div class="col-sm-5 led_button">
+                <button type='button' id="blu_led_btn" class="btn btn-md btn-default">Tog</button>
+            </div>
             <div class="col-sm-4 led_label">
-              <h4><span id="blu_led_label" class="label label-default">&#9728</span></h4> </div>
+              <h4><span id="blu_led_label" class="label label-default">&#9728</span></h4>
+          </div>
           </div>
         </div>
         <!-- ============================ LEDS =========================== -->

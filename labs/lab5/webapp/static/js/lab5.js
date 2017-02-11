@@ -72,49 +72,6 @@ $(document).ready(function() {
     }
   }
 
-  // // Let's read the current LED state
-  // function initial_conditions() {
-  //   var d = $.Deferred();
-  //
-  //   setTimeout(function() {
-  //     $.get('/leds/1',function(data){
-  //       led1 = $.trim(data.split(':')[1]);
-  //     });
-  //
-  //     $.get('/leds/2',function(data){
-  //       led2 = $.trim(data.split(':')[1]);
-  //     });
-  //
-  //     $.get('/leds/3',function(data){
-  //       led3 = $.trim(data.split(':')[1]);
-  //     });
-  //
-  //     // console.log("Got my data now!");
-  //     d.resolve();
-  //   }, 500);
-  //   return d.done();
-  // }
-  //
-  // // Let's initialize our LED vars to the current LED state "ON"/"OFF"
-  // function led_status() {
-  //   var d = $.Deferred();
-  //
-  //   setTimeout(function() {
-  //     if (led1 === '0') {led1 =  "OFF"} else {led1 =  "ON"}
-  //     if (led2 === '0') {led2 =  "OFF"} else {led2 =  "ON"}
-  //     if (led3 === '0') {led3 =  "OFF"} else {led3 =  "ON"}
-  //     d.resolve();
-  //
-  //     console.log("RED:",led1);
-  //     console.log("GRN:",led2);
-  //     console.log("BLU:",led3);
-  //   }, 1000);
-  //   return d.promise();
-  // }
-  //
-  // // make sure to intialize synchronously (10ms back to back)
-  // initial_conditions().then(led_status);
-
     // The red button click functions run asynchronously in the browser
     $('#red_led_btn').click(function() {
       if (led1 === "OFF") {led1 = "ON";} else {led1 = "OFF";}
@@ -144,5 +101,4 @@ $(document).ready(function() {
       });
     });
 
-  // code the green and blue buttons the same
   });
