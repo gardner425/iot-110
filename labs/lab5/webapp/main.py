@@ -1,28 +1,34 @@
 #!/usr/bin/python
 import time
 from gpio import PiGpio
+from bmp280 import PiBMP280
 from debouncer import Debouncer
 from flask import *
 
-app = Flask(__name__)
+# create GPIO Object and Switch Debouncer
 pi_gpio = PiGpio()
 db = Debouncer()
+
+# create an array of my pi bmp280 sensor dictionaries
+sensor = {"name" : "bmp280", "addr" : 0x76, "chip" : PiBMP280(0x76) , "data" : {}}
+(chip_id, chip_version) = sensor["chip"].readBMP280ID()
+sensor["data"]["chip_id"] = chip_id
+sensor["data"]["chip_version"] = chip_version
+# print "Sensor: " + str(sensor)
+
+# ============================== Functions ====================================
+def get_sensor_values():
+    (temperature, pressure) = sensor["chip"].readBMP280All()
+    sensor["data"]["temperature"] = { "reading": temperature, "units" : "C" }
+    sensor["data"]["pressure"] = { "reading": pressure, "units" : "hPa" }
+    return sensor["data"]
+# ============================== API Routes ===================================
+app = Flask(__name__)
 
 @app.route("/")
 def index():
     return render_template('index.html')
-    # create an instance of my pi gpio object class.
-    # pi_gpio = PiGpio()
-    # switch_state = pi_gpio.read_switch()
-    # led1_state = pi_gpio.get_led(1)
-    # led2_state = pi_gpio.get_led(2)
-    # led3_state = pi_gpio.get_led(3)
-    # return render_template('index.html', switch=switch_state,
-    #                             led1=led1_state,
-    #                             led2=led2_state,
-    #                             led3=led3_state)
 
-# ============================== API Routes ===================================
 # ============================ GET: /leds/<state> =============================
 # read the LED status by GET method from curl for example
 # curl http://iot405b.local:5000/leds/1
@@ -72,16 +78,16 @@ def myData():
             # return the yield results on each loop, but never exits while loop
             raw_switch = pi_gpio.read_switch()
             debounced_switch = str(db.debounce(raw_switch))
-            led_red = str(pi_gpio.get_led(1))
-            led_grn = str(pi_gpio.get_led(2))
-            led_blu = str(pi_gpio.get_led(3))
-            yield('data: {0} {1} {2} {3}\n\n'.format(debounced_switch,led_red,led_grn,led_blu))
-            time.sleep(0.1)
+            data_obj = get_sensor_values()
+            data_obj["led_red"] = str(pi_gpio.get_led(1))
+            data_obj["led_grn"] = str(pi_gpio.get_led(2))
+            data_obj["led_blu"] = str(pi_gpio.get_led(3))
+            data_obj["switch"] = debounced_switch
+            yield('data: {0}\n\n'.format(data_obj))
+            time.sleep(1.0)
     return Response(get_state_values(), mimetype='text/event-stream')
 # -----------------------------------------------------------------------------
 # ============================== API Routes ===================================
-
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True, threaded=True)

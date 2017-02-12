@@ -7,12 +7,16 @@ $(document).ready(function() {
 
   /* intercept the incoming states from SSE */
   iotSource.onmessage = function(e) {
-    console.log(e.data);
-    var params = e.data.split(' ');
-    updateSwitch(params[0]);
-    updateLeds(1,params[1]);
-    updateLeds(2,params[2]);
-    updateLeds(3,params[3]);
+    // must convert all single quoted data with double quote format
+    var dqf = e.data.replace(/'/g, '"');
+    // now we can parse into JSON
+    d = JSON.parse(dqf);
+    updateSwitch(d["switch"]);
+    updateLeds(1, d["led_red"]);
+    updateLeds(2, d["led_grn"]);
+    updateLeds(3, d["led_blu"]);
+    updateSensors(d);
+    console.log(d);
   }
 
   /* update the Switch based on its SSE state monitor */
@@ -30,6 +34,7 @@ $(document).ready(function() {
 
   /* update the LEDs based on their SSE state monitor */
   function updateLeds(ledNum,ledValue) {
+    // console.log("Inside updateLeds");
     if (ledNum === 1) {
       if (ledValue === '1') {
         // $('#red_led_label').text('ON');
@@ -100,4 +105,56 @@ $(document).ready(function() {
       });
     });
 
+      MBAR_TO_inHG = 0.029529983071;
+      var data = [];
+
+      function getDateNow() {
+        var d = new Date();
+        var date = d.getMonth() + 1 + '/' + d.getDate() + '/' + (d.getFullYear() - 2000);
+        var time = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+        return (date + " " + time);
+      }
+
+      updateSensors = (function(d) {
+        var t_c = d['temperature'].reading;
+        var t_f = (t_c * 9) / 5.0 + 32;
+        var p_mbar = d['pressure'].reading;
+        var p_inHg = p_mbar * MBAR_TO_inHG;
+
+        var date_now = getDateNow();
+        var t = t_c.toFixed(1) + '|' + t_f.toFixed(1);
+        var p = p_mbar.toFixed(1) + '|' + p_inHg.toFixed(2);
+
+        var obj = {};
+        obj['date'] = date_now;
+        obj['temp'] = t;
+        obj['press'] = p;
+        data.push(obj);
+
+        if (data.length > 3) {
+          data.shift();
+          clearTable();
+          updateTable(data);
+        }
+      });
+
+      function updateTable(data) {
+        $('tr.param-row').each(function(i) {
+          var tm = '<td>' + data[i]['date'] + '</td>';
+          var temp = '<td>' + data[i]['temp'] + '</td>';
+          var press = '<td>' + data[i]['press'] + '</td>';
+          $(this).append(tm);
+          $(this).append(temp);
+          $(this).append(press);
+        });
+      }
+
+      function clearTable() {
+        $('tr.param-row').each(function(i) {
+          $(this).empty();
+        });
+      }
+
+      // setInterval is for simulating sensor data only
+    //   setInterval(updateSensors, 3000);
   });
