@@ -1,25 +1,41 @@
 body {
   background-color: rgb(51, 0, 111);
   width: 800px;
-  /*margin: 0 auto;*/
-  padding-top: 10px;
-  /*border: 1px dashed gold;*/
+  padding-top: 5px;
+}
+
+#title {
+  text-align: center;
+}
+
+.panel {
+  margin: 5px auto;
+  background-color: darkgray;
+  border-radius: 5px;
+}
+
+.container {
+}
+
+.well {
+  width: 100%;
+  padding: 0.5%;
+}
+
+.well-sm {
+  margin: 5px auto;
+  padding: 5px;
 }
 
 div {
   text-align: center;
 }
 
-span.label {
-  font-size: 1.1em;
+span.label  {
+    font-size: 1.1em;
 }
-
-.dash {
-}
-
 
 /* Parent <div> of LED Buttons */
-
 .led_button {
   display: flex;
   flex-direction: row;
@@ -29,61 +45,44 @@ span.label {
 }
 
 button {
-  width: 170%;
+  width: 160%;
 }
 
-#title {
-  text-align: center;
+#tabs {
+  font-size: 0.8em;
+  height: 98%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  width: 98%;
+  margin-left: 1%;
+  margin-right: 1%;
 }
 
-.well {
-  width: 600px;
+#gpio-cell {
+  width: 16%;
 }
 
-.well-sm {
-  margin: 10px auto;
-}
-
-.panel {
-  background-color: darkgray;
-  width: 640px;
-}
-
-.gpio {
-  border: 2px solid lightgray;
-  border-radius: 5px;
-  padding-left: 15px;
-  height: 172px;
-  width: 25%;
-}
-
-.params {
-  border: 2px solid lightgray;
-  border-radius: 5px;
-  height: 172px;
-  width: 75%;
-  padding-top: 5px;
-  background-color: rgba(51, 0, 111, 0.5)
+#params-cell {
+  width: 84%;
 }
 
 table {
   background-color: lightgray;
   border-radius: 3px;
+  font-size: 1em;
+  margin: 5px auto;
+}
+
+table#con {
+ height: 240px;
+ width: 100%;
+}
+
+tbody {
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 
 th,td {
-  text-align: left;
-}
-
-.col-sm-6 {
-  /*   border: 1px dashed blue; */
-  margin-left: 5px;
-  height: 40px;
-}
-
-.col-sm-5 {
-}
-
-.col-sm-4 {
-  height: 40px;
+    text-align: left;
 }
