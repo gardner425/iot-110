@@ -19,7 +19,7 @@ def index():
 
 # =========================== Endpoint: /myData ===============================
 # read the sensor values by GET method from curl for example
-# curl http://iot8e3c:5000/myData
+# curl http://iot405b.local:5000/myData
 # -----------------------------------------------------------------------------
 @app.route('/myData')
 def myData():
@@ -28,7 +28,7 @@ def myData():
             # return the yield results on each loop, but never exits while loop
             data_obj = get_sensor_values()
             yield('data: {0}\n\n'.format(data_obj))
-            time.sleep(0.2)
+            time.sleep(0.25)
     return Response(get_values(), mimetype='text/event-stream')
 # ============================== API Routes ===================================
 

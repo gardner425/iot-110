@@ -6,13 +6,11 @@ $(document).ready(function() {
     var double_quote_formatted_data = e.data.replace(/'/g, '"');
     // now we can parse into JSON
     parsed_json_data = JSON.parse(double_quote_formatted_data);
-    // console.log(parsed_json_data);
 
     updateEnvironmentalTableData(parsed_json_data);
+    updateEnvChartData(parsed_json_data);
     updateInertialTableData(parsed_json_data);
     updateInertialChartData(parsed_json_data);
-    updateEnvChartData(parsed_json_data);
-    // update Imu Chart Data
     // update Joystick Data
     // update Dislay Data
   }
@@ -47,7 +45,7 @@ $(document).ready(function() {
     env['time'] = timedata.time;
 
     env_table_data.push(env);
-    if (env_table_data.length > 4) {
+    if (env_table_data.length > 16) {
       env_table_data.shift();
       clearEnvTables();
       updateEnvironmentalTable(env_table_data);
@@ -76,7 +74,7 @@ $(document).ready(function() {
     imu['time'] = timedata.time;
 
     imu_table_data.push(imu);
-    if (imu_table_data.length > 4) {
+    if (imu_table_data.length > 16) {
       imu_table_data.shift();
       clearImuTables();
       updateInertialTable(imu_table_data);
@@ -188,7 +186,6 @@ $(document).ready(function() {
   // build the chart data array for MorrisJS structure
   function update_accel_chart(data) {
     var chart_data = [];
-    // var i = 0;
     data.forEach(function(d){
       accel_record = {
         time: d['date'],
