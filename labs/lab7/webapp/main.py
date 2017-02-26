@@ -3,15 +3,22 @@ import time
 import pprint
 from stepper import PiStepper
 from bmp280 import PiBMP280
+from pwm import PiPwm
 from flask import *
 app = Flask(__name__)
 
 # Create a stepper motor controller object
 pi_smc = PiStepper()
+# Create a LED PWM controller object
+pi_pwm = PiPwm()
 
 # create a pi bmp280 sensor object and data structure
 env_sensor = {'name' : 'bmp280', 'addr' : 0x76, 'chip' : PiBMP280(0x76) , 'data' : {}}
-# import pdb; pdb.set_trace()
+
+# Starting PWM0 at 100Hz with 50% duty cycle
+led_green = pi_pwm.start_pwm(0, 100, 50)
+# Starting PWM1 at 100Hz with 50% duty cycle
+led_red = pi_pwm.start_pwm(1, 100, 50)
 
 ## function to read environmental parameters
 def get_env_sensors():
@@ -32,7 +39,7 @@ def index():
 # ============================== API Routes ===================================
 # ============================= POST: /motor/<state> ============================
 # get sensor values methods from curl for example
-# curl http://iot8e3c:5000/sensors
+# curl http://iot405b.local:5000/sensors
 # -----------------------------------------------------------------------------
 @app.route("/sensors", methods=['GET'])
 def sensors():
@@ -40,10 +47,28 @@ def sensors():
     # pprint.pprint(get_env_sensors())
     return "Sensors" + "\n"
 
+# ====================== GET: /led_green/<int:duty_cycle> ========================
+# set the motor speed in RPM by GET method from curl. For example:
+# curl http://iot405b.local:5000/led_green/50
+# -----------------------------------------------------------------------------
+@app.route("/led_green/<int:duty_cycle>", methods=['GET'])
+def set_led_green(duty_cycle):
+    pi_pwm.change_duty_cycle(led_green, duty_cycle)
+    return "LED GREEN : " + str(duty_cycle) + "\n"
+
+# ====================== GET: /led_red/<int:duty_cycle> ========================
+# set the motor speed in RPM by GET method from curl. For example:
+# curl http://iot405b.local:5000/led_red/50
+# -----------------------------------------------------------------------------
+@app.route("/led_red/<int:duty_cycle>", methods=['GET'])
+def set_led_red(duty_cycle):
+    pi_pwm.change_duty_cycle(led_red, duty_cycle)
+    return "LED RED : " + str(duty_cycle) + "\n"
+
 # ============================= POST: /motor/<state> ============================
 # control motor by POST methods from curl for example
-# curl http://iot8e3c:5000/motor/0
-# curl http://iot8e3c:5000/motor/1
+# curl http://iot405b.local:5000/motor/0
+# curl http://iot405b.local:5000/motor/1
 # -----------------------------------------------------------------------------
 @app.route("/motor/<int:motor_state>", methods=['GET'])
 def motor(motor_state):
@@ -58,7 +83,7 @@ def motor(motor_state):
 
 # ====================== GET: /motor_speed/<speed_rpm> ========================
 # set the motor speed in RPM by GET method from curl. For example:
-# curl http://iot8e3c:5000/motor_speed/60
+# curl http://iot405b.local:5000/motor_speed/60
 # -----------------------------------------------------------------------------
 @app.route("/motor_speed/<int:motor_speed>", methods=['GET'])
 def set_motor_speed(motor_speed):
@@ -67,7 +92,7 @@ def set_motor_speed(motor_speed):
 
 # ===================== GET: /motor_zero =====================
 # set the motor direction (CW/CCW) by GET method from curl. For example:
-# curl http://iot8e3c:5000/motor_direction/1
+# curl http://iot405b.local:5000/motor_direction/1
 # -----------------------------------------------------------------------------
 @app.route("/motor_zero", methods=['GET'])
 def set_motor_zero():
@@ -76,7 +101,7 @@ def set_motor_zero():
 
 # ===================== GET: /motor_direction/<direction> =====================
 # set the motor direction (CW/CCW) by GET method from curl. For example:
-# curl http://iot8e3c:5000/motor_direction/1
+# curl http://iot405b.local:5000/motor_direction/1
 # -----------------------------------------------------------------------------
 @app.route("/motor_direction/<string:direction>", methods=['GET'])
 def set_motor_dir(direction):
@@ -85,7 +110,7 @@ def set_motor_dir(direction):
 
 # ===================== GET: /motor_steps/<steps> =====================
 # set the motor steps (int) by HTTP GET method  CURL example:
-# curl http://iot8e3c:5000/motor_steps/100
+# curl http://iot405b.local:5000/motor_steps/100
 # -----------------------------------------------------------------------------
 @app.route("/motor_steps/<int:steps>", methods=['GET'])
 def set_motor_steps(steps):
@@ -94,7 +119,7 @@ def set_motor_steps(steps):
 
 # ====================== GET: /motor_position/<position> ======================
 # set the motor position by HTTP GET method. CURL example:
-# curl http://iot8e3c:5000/motor_position/1
+# curl http://iot405b.local:5000/motor_position/1
 # -----------------------------------------------------------------------------
 @app.route("/motor_position/<int:position>", methods=['GET'])
 def set_motor_pos(position):
@@ -104,7 +129,7 @@ def set_motor_pos(position):
 
 # ======================= POST: /motor_multistep/<dir> =========================
 # set the motor multistep by POST method from curl. For example:
-# curl --data 'steps=10&direction=CW' http://iot8e3c:5000/motor_multistep
+# curl --data 'steps=10&direction=CW' http://iot405b.local:5000//motor_multistep
 # -----------------------------------------------------------------------------
 @app.route("/motor_multistep", methods=['POST'])
 def postMotorMultistep():
@@ -123,8 +148,8 @@ def postMotorMultistep():
 
     return "Motor Multisteps Steps:" + steps + " Direction:"+ direction + "\n"
 
-# curl --data 'mykey=FOOBAR' http://0.0.0.0:5000/createHello
-# echo 'mykey={"name":"Carrie Fisher","age":"60"}' | curl -d @- http://0.0.0.0:5000/createHello
+# curl --data 'mykey=FOOBAR' http://iot405b.local:5000/createHello
+# echo 'mykey={"name":"Carrie Fisher","age":"60"}' | curl -d @- http://iot405b.local:5000/createHello
 @app.route('/test', methods = ['POST'])
 def postRequestTest():
     mydata = request.data
@@ -140,7 +165,7 @@ def postRequestTest():
 # ============================= Run App Server ================================
 # =========================== Endpoint: /myData ===============================
 # read the sensor values by GET method from curl for example
-# curl http://iot8e3c:5000/myData
+# curl http://iot405b.local:5000/myData
 # -----------------------------------------------------------------------------
 @app.route('/myData')
 def myData():

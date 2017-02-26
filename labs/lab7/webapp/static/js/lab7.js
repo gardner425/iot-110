@@ -80,7 +80,7 @@ $(document).ready(function() {
 
   function getDateNow() {
     var d = new Date();
-    var date = (d.getFullYear()) + '-' + d.getMonth() + 1 + '-' + d.getDate();
+    var date = (d.getFullYear()) + '-' + (d.getMonth() + 1) + '-' + d.getDate();
     var time = zeropad(d.getHours(),2) + ':' + zeropad(d.getMinutes(),2) +
     ':' + zeropad(d.getSeconds(),2) + '.' + zeropad(d.getMilliseconds(),3);
     return {time: time, date: (date + " " + time)};
@@ -133,11 +133,14 @@ $(document).ready(function() {
     animate: true,
     slide: function( event, ui ) {
       $( "#pwm1" ).val( ui.value );
-      console.log("red led duty cycle(%):",ui.value);
+    //   console.log("red led duty cycle(%):",ui.value);
     }
   });
   $( "#pwm1" ).val( $( "#slider1" ).slider( "value" ) );
-  // ... add code to control PWM driver for hardware ...
+  $('#pwm1').change(function() {
+    console.log('LED RED Changed to ' + $( "#pwm1" ).val());
+    $.get('/led_red/'+ $("#pwm1").val());
+  });
   // ===================================================================
   // GREEN LED SLIDER
   $( "#slider2" ).slider({
@@ -149,11 +152,14 @@ $(document).ready(function() {
     animate: true,
     slide: function( event, ui ) {
       $( "#pwm2" ).val( ui.value );
-      console.log("grn led duty cycle(%):",ui.value);
+    //   console.log("grn led duty cycle(%):",ui.value);
     }
   });
   $( "#pwm2" ).val( $( "#slider2" ).slider( "value" ) );
-  // ... add code to control PWM driver for hardware ...
+  $('#pwm2').change(function() {
+    console.log('LED GREEN Changed to ' + $( "#pwm2" ).val());
+    $.get('/led_green/'+ $("#pwm2").val());
+  });
   // ===================================================================
 
 
