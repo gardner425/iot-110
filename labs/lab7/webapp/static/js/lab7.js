@@ -136,8 +136,8 @@ $(document).ready(function() {
     //   console.log("red led duty cycle(%):",ui.value);
     }
   });
-  $( "#pwm1" ).val( $( "#slider1" ).slider( "value" ) );
-  $('#pwm1').change(function() {
+  $( "#pwm1" ).val( $( "#slider1" ).slider( "value" ) )
+  .change(function() {
     console.log('LED RED Changed to ' + $( "#pwm1" ).val());
     $.get('/led_red/'+ $("#pwm1").val());
   });
@@ -155,8 +155,8 @@ $(document).ready(function() {
     //   console.log("grn led duty cycle(%):",ui.value);
     }
   });
-  $( "#pwm2" ).val( $( "#slider2" ).slider( "value" ) );
-  $('#pwm2').change(function() {
+  $( "#pwm2" ).val( $( "#slider2" ).slider( "value" ) )
+  .change(function() {
     console.log('LED GREEN Changed to ' + $( "#pwm2" ).val());
     $.get('/led_green/'+ $("#pwm2").val());
   });

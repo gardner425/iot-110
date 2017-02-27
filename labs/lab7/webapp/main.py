@@ -16,9 +16,9 @@ pi_pwm = PiPwm()
 env_sensor = {'name' : 'bmp280', 'addr' : 0x76, 'chip' : PiBMP280(0x76) , 'data' : {}}
 
 # Starting PWM0 at 100Hz with 50% duty cycle
-led_green = pi_pwm.start_pwm(0, 100, 50)
+led_red = pi_pwm.start_pwm(0, 100, 50)
 # Starting PWM1 at 100Hz with 50% duty cycle
-led_red = pi_pwm.start_pwm(1, 100, 50)
+led_green = pi_pwm.start_pwm(1, 100, 50)
 
 ## function to read environmental parameters
 def get_env_sensors():
