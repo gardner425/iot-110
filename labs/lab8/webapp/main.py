@@ -8,12 +8,37 @@ from flask import *
 # create Pi SenseHat Object
 pi_sense_hat = PiSenseHat()
 
+# ============================= MQTT Callbacks ================================
+# The callback for when a CONNACK message is received from the broker.
+def on_connect(client, userdata, flags, rc):
+    print("CONNACK received with code %d." % (rc))
+
+# The callback for when a PUBLISH message is received from the broker.
+def on_message(client, userdata, msg):
+    print (string.split(msg.payload))
+# ============================= MQTT Callbacks ================================
+
 # ============================== Functions ====================================
 def get_sensor_values():
     return pi_sense_hat.getAllSensors()
 
 # ============================== API Routes ===================================
 app = Flask(__name__)
+
+# MQTT Configuration for local network
+localBroker = "iot405b"     # Local MQTT broker
+localPort   = 1883          # Local MQTT port
+localUser   = "pi"          # Local MQTT user
+localPass = "raspberry"     # Local MQTT password
+localTopic = "iot/sensor"   # Local MQTT topic to monitor
+localTimeOut = 120          # Local MQTT session timeout
+
+# Setup to Publish Sensor Data
+mqttc = paho.Client()
+mqttc.on_connect = on_connect
+mqttc.on_message = on_message
+mqttc.username_pw_set(localUser, localPass)
+mqttc.connect(localBroker, localPort, localTimeOut)
 
 @app.route("/")
 def index():
@@ -28,9 +53,11 @@ def myData():
     def get_values():
         while True:
             # return the yield results on each loop, but never exits while loop
-            data_obj = get_sensor_values()
-            yield('data: {0}\n\n'.format(data_obj))
-            time.sleep(0.25)
+            data_payload = get_sensor_values()
+            yield('data: {0}\n\n'.format(data_payload))
+            print("MQTT Topic:"+localTopic, str(data_payload))
+            mqttc.publish(localTopic,str(data_payload))
+            time.sleep(2.0)
     return Response(get_values(), mimetype='text/event-stream')
 # ============================== API Routes ===================================
 
