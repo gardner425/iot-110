@@ -57,7 +57,7 @@ msg = {'topic':localTopic, 'payload':"", 'qos':0, 'retain':False }
 pi_sense.clear_display()
 # loop
 print('Getting Sensor Data')
-for i in range(1,9):
+for i in range(1,3):
     print("SensorSet[%d]" % (i))
     displayLine(i-1)
     sensors = pi_sense.getAllSensors()
@@ -66,8 +66,8 @@ for i in range(1,9):
     msg['payload'] = str(sensors)
     print("msg["+str(i)+"]:"+msg['payload'])
 
-#   publish(topic, payload=None, qos=0, retain=False)
-    mqttc.publish('iot/test', msg['payload'], 1)
+    mqttc.publish(localTopic, msg['payload'], 1)
+    # mqttc.publish('iot/test', msg['payload'], 1)
     time.sleep(2.0)
 
 print('End of MQTT Messages')
